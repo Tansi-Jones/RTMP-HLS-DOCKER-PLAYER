@@ -1,0 +1,14 @@
+# version: "3.9"
+services:
+  rtmp:
+    build: ./rtmp
+    ports:
+      - "1935:1935"
+      - "5173:5173"
+    container_name: rtmp
+    volumes:
+      - ./data:/tmp/hls # mount the data folder to the container, also called hls folder
+
+  auth:
+    build: ./auth
+    container_name: auth_server

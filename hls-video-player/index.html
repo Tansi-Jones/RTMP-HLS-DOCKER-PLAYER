@@ -1,0 +1,75 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Video Player</title>
+
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+  </head>
+
+  <body>
+    <div style="width: 800px; height: 400px">
+      <video src="" id="player" controls></video>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        let video = document.getElementById("player");
+        // let source = "http://localhost:8000/live/tansi/index.m3u8";
+        let source = "http://localhost:8000/live/weep/index.m3u8";
+
+        const defaultOptions = {};
+
+        if (Hls.isSupported()) {
+          const hls = new Hls();
+
+          hls.loadSource(source);
+          hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+            const availableQualities = hls.levels.map((level) => level.height);
+            console.log(availableQualities);
+            defaultOptions.controls = [
+              "play-large", // The large play button in the center
+              "restart", // Restart playback
+              "rewind", // Rewind by the seek time (default 10 seconds)
+              "play", // Play/pause playback
+              "fast-forward", // Fast forward by the seek time (default 10 seconds)
+              "progress", // The progress bar and scrubber for playback and buffering
+              "current-time", // The current time of playback
+              "duration", // The full duration of the media
+              "mute", // Toggle mute
+              "volume", // Volume control
+              "captions", // Toggle captions
+              "settings", // Settings menu
+              "pip", // Picture-in-picture (currently Safari only)
+              "airplay", // Airplay (currently Safari only)
+              "download", // Show a download button with a link to either the current source or a custom URL you specify in your options
+              "fullscreen", // Toggle fullscreen
+            ];
+            defaultOptions.quality = {
+              default: availableQualities[0],
+              options: availableQualities,
+              forced: true,
+              onChange: function (e) {
+                updateQuality(e);
+              },
+            };
+
+            new Plyr(video, defaultOptions);
+          });
+          hls.attachMedia(video);
+          window.hls = hls;
+        }
+
+        function updateQuality(newQuality) {
+          window.hls.levels.forEach((level, levelIndex) => {
+            if (level.height === newQuality) {
+              window.hls.currentLevel = levelIndex;
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

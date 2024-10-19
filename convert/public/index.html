@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RTMP to HLS Streaming</title>
+  </head>
+  <body>
+    <h2>RTMP to HLS Streaming</h2>
+
+    <!-- RTMP Video Player using flv.js -->
+    <div>
+      <h3>RTMP Stream</h3>
+      <video id="rtmpPlayer" width="640" height="360" controls></video>
+    </div>
+
+    <!-- HLS Video Player using hls.js -->
+    <div>
+      <h3>HLS Stream</h3>
+      <video id="hlsPlayer" width="640" height="360" controls></video>
+    </div>
+
+    <!-- HLS Video Player using hls.js -->
+
+    <!-- Load the scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/flv.js@1.5.0/dist/flv.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@1.0.12/dist/hls.min.js"></script>
+
+    <script>
+      // RTMP Player
+      if (flvjs.isSupported()) {
+        var rtmpPlayer = flvjs.createPlayer({
+          type: "flv",
+          url: "rtmp://localhost:1930/live/mystream", // Replace 'streamKey' with the actual stream key
+        });
+        rtmpPlayer.attachMediaElement(document.getElementById("rtmpPlayer"));
+        rtmpPlayer.load();
+        rtmpPlayer.play();
+      }
+
+      // HLS Player
+      if (Hls.isSupported()) {
+        var hlsPlayer = new Hls();
+        hlsPlayer.loadSource("http://localhost:8050/hls/mystream.m3u8"); // Replace 'streamKey' with the actual stream key
+        hlsPlayer.attachMedia(document.getElementById("hlsPlayer"));
+        hlsPlayer.on(Hls.Events.MANIFEST_PARSED, function () {
+          hlsPlayer.startLoad();
+          hlsPlayer.play();
+        });
+      }
+    </script>
+  </body>
+</html>

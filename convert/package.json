@@ -1,0 +1,20 @@
+{
+  "name": "convert",
+  "version": "1.0.0",
+  "description": "",
+  "main": "convert.js",
+  "scripts": {
+    "start": "nodemon rtmp-hls.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "child_process": "^1.0.2",
+    "fluent-ffmpeg": "^2.1.2",
+    "node-media-server": "^2.6.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  }
+}

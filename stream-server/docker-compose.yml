@@ -1,0 +1,10 @@
+services:
+  rtmp:
+    build: ./rtmp
+    ports:
+      - "1935:1935"
+      - "80:80"
+    container_name: rtmp-stream
+    volumes:
+      # - ./data:/tmp/hls
+      - ./videos:/var/www/videos

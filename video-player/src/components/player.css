@@ -1,0 +1,8 @@
+@media only screen and (max-width: 768px) {
+  .fullscreen {
+    transform: rotate(90deg);
+    width: 100vh;
+    height: 100vw;
+    transform-origin: left top;
+  }
+}
